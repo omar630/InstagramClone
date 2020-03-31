@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(edtEmail.getText().toString().equals("") ||  edtPassword.getText().toString().equals("")){
                     progressDialog.dismiss();
                     FancyToast.makeText(LoginActivity.this,"Enter username and password.", FancyToast.LENGTH_LONG,FancyToast.INFO,true).show();
+                    transitionToSocialMediaActivity();
                 }
                 else {
                     ParseUser.logInInBackground(edtEmail.getText().toString(), edtPassword.getText().toString(),
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 public void done(ParseUser user, ParseException e) {
                                     if (user != null && e == null) {
                                         FancyToast.makeText(LoginActivity.this, "Login Successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true);
+                                        transitionToSocialMediaActivity();
                                     }
                                     else {
                                         FancyToast.makeText(LoginActivity.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
@@ -74,7 +76,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void rootLayoutTapped(View view){
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+        try {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void transitionToSocialMediaActivity(){
+        Intent intent = new Intent(LoginActivity.this, SocialMediaActivity.class);
+        startActivity(intent);
     }
 }
